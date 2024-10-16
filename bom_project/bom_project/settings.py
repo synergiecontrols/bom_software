@@ -7,7 +7,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Security settings
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'default-secret-key')
 DEBUG = os.environ.get('DJANGO_DEBUG', 'False') == 'True'
-ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', 'localhost').split(',') + ['bom-software1-u9ww.onrender.com']
+ALLOWED_HOSTS =['bom-software1-u9ww.onrender.com','https://bom-software1-u9ww.onrender.com']
 
 # Installed apps
 INSTALLED_APPS = [
