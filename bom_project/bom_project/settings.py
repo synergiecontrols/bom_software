@@ -4,10 +4,12 @@ import dj_database_url
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Security settings
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'default-secret-key')
 DEBUG = os.environ.get('DJANGO_DEBUG', 'False') == 'True'
-ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', 'localhost').split(',')
+ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', 'localhost').split(',') + ['bom-software1-u9ww.onrender.com']
 
+# Installed apps
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -20,7 +22,9 @@ INSTALLED_APPS = [
     'corsheaders',
 ]
 
+# Middleware settings
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',  # Moved to the top
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -28,12 +32,13 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
 ]
 
+# URL configurations
 ROOT_URLCONF = 'bom_project.urls'
 WSGI_APPLICATION = 'bom_project.wsgi.application'
 
+# Database settings
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -45,15 +50,16 @@ DATABASES = {
     }
 }
 
+# Use DATABASE_URL if it's set
 database_url = os.environ.get("DATABASE_URL")
-DATABASES["default"] = dj_database_url.parse(database_url)
+if database_url:
+    DATABASES["default"] = dj_database_url.parse(database_url)
 
-
-
-
+# Static files settings
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
+# Password validators
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -69,18 +75,22 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# Localization settings
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
+# CORS settings
 CORS_ALLOWED_ORIGINS = [
     "https://bom-software1-u9ww.onrender.com",
     "http://localhost:3000",
 ]
 
+CORS_ALLOW_CREDENTIALS = True  # Allow cookies, etc.
 CORS_ALLOW_ALL_ORIGINS = False  # Not recommended for production
 
+# REST framework settings
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
